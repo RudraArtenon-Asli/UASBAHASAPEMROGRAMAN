@@ -1,0 +1,373 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Perpustakaan Rizki Setiawan</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"
+    />
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap');
+
+        body {
+            font-family: 'Poppins', sans-serif;
+            background-color: #ffffff;
+        }
+
+        .book-card {
+            transition: all 0.3s ease, box-shadow 0.3s ease, transform 0.3s ease;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            cursor: pointer;
+        }
+
+        .book-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 15px rgba(0, 0, 0, 0.1);
+            z-index: 10;
+        }
+
+        .search-box {
+            transition: all 0.3s ease;
+        }
+
+        .search-box:focus {
+            box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.3);
+        }
+
+        .navbar {
+            -webkit-backdrop-filter: blur(10px);
+            backdrop-filter: blur(10px);
+            background-color: rgba(255, 255, 255, 0.9);
+        }
+
+        .floating-btn {
+            position: fixed;
+            bottom: 2rem;
+            right: 2rem;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+            transition: background-color 0.3s ease;
+            z-index: 100;
+        }
+
+        .modal {
+            transition: all 0.3s ease;
+            opacity: 0;
+            visibility: hidden;
+        }
+
+        .modal.active {
+            opacity: 1;
+            visibility: visible;
+        }
+    </style>
+</head>
+<body>
+    <!-- Navbar -->
+    <nav class="navbar fixed top-0 left-0 right-0 z-50 border-b border-gray-200">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex justify-between h-16">
+                <div class="flex items-center">
+                    <div class="flex-shrink-0 flex items-center">
+                        <i class="fas fa-book-open text-blue-600 text-2xl mr-2"></i>
+                        <span class="text-xl font-bold text-gray-800">Perpustakaan Rizki Setiawan</span>
+                    </div>
+                </div>
+                <div class="flex items-center">
+                    <div class="relative">
+                        <input
+                          type="text"
+                          id="searchInput"
+                          class="search-box h-10 pl-10 pr-4 rounded-full border border-gray-300 focus:outline-none focus:border-blue-500"
+                          placeholder="Cari buku..."
+                        />
+                        <i class="fas fa-search absolute left-3 top-3 text-gray-400"></i>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Main Content -->
+    <div class="pt-20 pb-16">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <!-- Hero Section -->
+            <div class="bg-gradient-to-r from-blue-500 to-indigo-600 rounded-xl p-8 mb-10 text-white">
+                <h1 class="text-4xl font-bold mb-4">Selamat Datang di Perpustakaan Digital</h1>
+                <p class="text-xl mb-6">Temuka Buku Buku Ke Sukaan Anda</p>
+                <div class="flex space-x-4">
+                    <button type="button" class="px-6 py-3 bg-white text-blue-600 rounded-full font-medium hover:bg-gray-100 transition">Jelajahi Koleksi</button>
+                </div>
+            </div>
+
+            <!-- Categories -->
+            <div class="mb-10">
+                <h2 class="text-2xl font-bold mb-6 text-gray-800">Kategori Buku</h2>
+                <div class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-5 gap-4">
+                    <button class="category-btn px-4 py-2 bg-white rounded-lg border border-gray-200 hover:bg-blue-50 hover:border-blue-200 transition flex items-center justify-center" data-category="Semua">
+                        <i class="fas fa-book mr-2 text-blue-500"></i>
+                        <span>Semua</span>
+                    </button>
+                    <button class="category-btn px-4 py-2 bg-white rounded-lg border border-gray-200 hover:bg-blue-50 hover:border-blue-200 transition flex items-center justify-center" data-category="Fiksi">
+                        <i class="fas fa-brain mr-2 text-purple-500"></i>
+                        <span>Fiksi</span>
+                    </button>
+                    <button class="category-btn px-4 py-2 bg-white rounded-lg border border-gray-200 hover:bg-blue-50 hover:border-blue-200 transition flex items-center justify-center" data-category="Sains">
+                        <i class="fas fa-flask mr-2 text-green-500"></i>
+                        <span>Sains</span>
+                    </button>
+                    <button class="category-btn px-4 py-2 bg-white rounded-lg border border-gray-200 hover:bg-blue-50 hover:border-blue-200 transition flex items-center justify-center" data-category="Bisnis">
+                        <i class="fas fa-chart-line mr-2 text-yellow-500"></i>
+                        <span>Bisnis</span>
+                    </button>
+                    <button class="category-btn px-4 py-2 bg-white rounded-lg border border-gray-200 hover:bg-blue-50 hover:border-blue-200 transition flex items-center justify-center" data-category="Teknologi">
+                        <i class="fas fa-laptop-code mr-2 text-red-500"></i>
+                        <span>Teknologi</span>
+                    </button>
+                </div>
+            </div>
+
+            <!-- Book Collection -->
+            <div>
+                <div class="flex justify-between items-center mb-6">
+                    <h2 class="text-2xl font-bold text-gray-800">Koleksi Buku Terbaru</h2>
+                    <button id="viewAllBtn" class="text-blue-600 hover:text-blue-800 font-medium">Lihat Semua</button>
+                </div>
+
+                <div id="bookContainer" class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
+                    <!-- Book cards will be dynamically loaded here -->
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Add Book Floating Button -->
+    <button
+      id="addBookBtn"
+      class="floating-btn bg-blue-600 text-white rounded-full w-14 h-14 flex items-center justify-center hover:bg-blue-700 transition"
+      title="Tambah Buku Baru"
+    >
+      <i class="fas fa-plus text-xl"></i>
+    </button>
+
+    <!-- Add Book Modal -->
+    <div
+      id="addBookModal"
+      class="modal fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50"
+      aria-hidden="true"
+    >
+        <div class="bg-white rounded-xl p-6 w-full max-w-md">
+            <div class="flex justify-between items-center mb-4">
+                <h3 class="text-xl font-bold text-gray-800">Tambah Buku Baru</h3>
+                <button id="closeModalBtn" class="text-gray-500 hover:text-gray-700" aria-label="Tutup Modal">
+                    <i class="fas fa-times"></i>
+                </button>
+            </div>
+            <form id="addBookForm">
+                <div class="mb-4">
+                    <label for="bookTitle" class="block text-sm font-medium text-gray-700 mb-1">Judul Buku</label>
+                    <input
+                      type="text"
+                      id="bookTitle"
+                      class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+                      required
+                    />
+                </div>
+                <div class="mb-4">
+                    <label for="bookAuthor" class="block text-sm font-medium text-gray-700 mb-1">Penulis</label>
+                    <input
+                      type="text"
+                      id="bookAuthor"
+                      class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+                      required
+                    />
+                </div>
+                <div class="mb-4">
+                    <label for="bookCategory" class="block text-sm font-medium text-gray-700 mb-1">Kategori</label>
+                    <select
+                      id="bookCategory"
+                      class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+                    >
+                        <option value="Fiksi">Fiksi</option>
+                        <option value="Sains">Sains</option>
+                        <option value="Bisnis">Bisnis</option>
+                        <option value="Teknologi">Teknologi</option>
+                        <option value="Lainnya">Lainnya</option>
+                    </select>
+                </div>
+                <div class="mb-4">
+                    <label for="bookCover" class="block text-sm font-medium text-gray-700 mb-1">Link Cover Buku</label>
+                    <input
+                      type="text"
+                      id="bookCover"
+                      class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+                      placeholder="URL gambar cover"
+                    />
+                </div>
+                <div class="mb-4">
+                    <label for="bookLink" class="block text-sm font-medium text-gray-700 mb-1">Link Buku (VS Code)</label>
+                    <input
+                      type="text"
+                      id="bookLink"
+                      class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+                      placeholder="Link dari Visual Studio Code"
+                      required
+                    />
+                </div>
+                <div class="flex justify-end space-x-3">
+                    <button
+                      type="button"
+                      id="cancelAddBtn"
+                      class="px-4 py-2 border border-gray-300 rounded-md text-gray-700 hover:bg-gray-50"
+                    >
+                      Batal
+                    </button>
+                    <button
+                      type="submit"
+                      class="px-4 py-2 bg-blue-600 text-white rounded-md hover:bg-blue-700"
+                    >
+                      Simpan
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <script>
+        let books = JSON.parse(localStorage.getItem('libraryBooks')) || [
+            {
+                id: 1,
+                title: "The background is so invincible that the system was upgraded overnight!",
+                author: "Unknown",
+                category: "Fiksi",
+                cover: "https://www.fanmtl.com/d/file/cover_ke/k3b0ghrnztr.jpg",
+                link: "https://www.fanmtl.com/novel/ke382882.html"
+            },
+        ];
+
+        const bookContainer = document.getElementById('bookContainer');
+        const addBookBtn = document.getElementById('addBookBtn');
+        const addBookModal = document.getElementById('addBookModal');
+        const closeModalBtn = document.getElementById('closeModalBtn');
+        const cancelAddBtn = document.getElementById('cancelAddBtn');
+        const addBookForm = document.getElementById('addBookForm');
+        const searchInput = document.getElementById('searchInput');
+        const categoryBtns = document.querySelectorAll('.category-btn');
+
+        function renderBooks(booksToRender) {
+            bookContainer.innerHTML = '';
+            if (booksToRender.length === 0) {
+                bookContainer.innerHTML = '<p class="text-center col-span-full text-gray-500">Tidak ada buku ditemukan.</p>';
+                return;
+            }
+            booksToRender.forEach(book => {
+                const bookCard = document.createElement('div');
+                bookCard.className = 'book-card bg-white rounded-xl overflow-hidden border border-gray-200 hover:border-blue-200 shadow-sm flex flex-col';
+                bookCard.innerHTML = `
+                    <div class="h-48 overflow-hidden">
+                        <img src="${book.cover}" alt="Cover buku ${book.title}" class="w-full h-full object-cover" />
+                    </div>
+                    <div class="p-4 flex flex-col flex-grow">
+                        <h3 class="font-bold text-lg mb-1 text-gray-800 truncate" title="${book.title}">${book.title}</h3>
+                        <p class="text-gray-600 text-sm mb-2 truncate" title="${book.author}">${book.author}</p>
+                        <span class="inline-block px-2 py-1 text-xs rounded-full ${getCategoryColor(book.category)} w-max">${book.category}</span>
+                        <div class="mt-auto flex justify-between items-center pt-4">
+                            <a href="${book.link}" target="_blank" rel="noopener noreferrer" class="text-blue-600 hover:text-blue-800 text-sm font-medium">Baca Buku</a>
+                            <button class="text-gray-500 hover:text-gray-700" onclick="showBookDetails(${book.id})" aria-label="Info buku ${book.title}">
+                                <i class="fas fa-info-circle"></i>
+                            </button>
+                        </div>
+                    </div>
+                `;
+                bookContainer.appendChild(bookCard);
+            });
+        }
+
+        function getCategoryColor(category) {
+            switch(category) {
+                case 'Fiksi': return 'bg-purple-100 text-purple-800';
+                case 'Sains': return 'bg-green-100 text-green-800';
+                case 'Bisnis': return 'bg-yellow-100 text-yellow-800';
+                case 'Teknologi': return 'bg-red-100 text-red-800';
+                default: return 'bg-gray-100 text-gray-800';
+            }
+        }
+
+        function showBookDetails(bookId) {
+            const book = books.find(b => b.id === bookId);
+            alert(`Detail Buku:\nJudul: ${book.title}\nPenulis: ${book.author}\nKategori: ${book.category}`);
+        }
+
+        function filterBooks() {
+            const searchTerm = searchInput.value.toLowerCase();
+            const filteredBooks = books.filter(book =>
+                book.title.toLowerCase().includes(searchTerm) ||
+                book.author.toLowerCase().includes(searchTerm) ||
+                book.category.toLowerCase().includes(searchTerm)
+            );
+            renderBooks(filteredBooks);
+        }
+
+        function filterByCategory(category) {
+            if (category === 'Semua') {
+                renderBooks(books);
+            } else {
+                const filteredBooks = books.filter(book => book.category === category);
+                renderBooks(filteredBooks);
+            }
+        }
+
+        addBookBtn.addEventListener('click', () => {
+            addBookModal.classList.add('active');
+        });
+
+        closeModalBtn.addEventListener('click', () => {
+            addBookModal.classList.remove('active');
+        });
+
+        cancelAddBtn.addEventListener('click', () => {
+            addBookModal.classList.remove('active');
+        });
+
+        addBookForm.addEventListener('submit', (e) => {
+            e.preventDefault();
+
+            const newBook = {
+                id: books.length ? Math.max(...books.map(b => b.id)) + 1 : 1,
+                title: document.getElementById('bookTitle').value.trim(),
+                author: document.getElementById('bookAuthor').value.trim(),
+                category: document.getElementById('bookCategory').value,
+                cover: document.getElementById('bookCover').value.trim() || 'https://via.placeholder.com/150x200?text=No+Cover',
+                link: document.getElementById('bookLink').value.trim()
+            };
+
+            if (!newBook.title || !newBook.author || !newBook.link) {
+                alert('Judul, Penulis, dan Link Buku wajib diisi!');
+                return;
+            }
+
+            books.unshift(newBook);
+            localStorage.setItem('libraryBooks', JSON.stringify(books));
+            renderBooks(books);
+            addBookForm.reset();
+            addBookModal.classList.remove('active');
+
+            alert('Buku berhasil ditambahkan!');
+        });
+
+        searchInput.addEventListener('input', filterBooks);
+
+        categoryBtns.forEach(btn => {
+            btn.addEventListener('click', () => {
+                const category = btn.getAttribute('data-category') || btn.querySelector('span').textContent;
+                filterByCategory(category);
+            });
+        });
+
+        // Initial render
+        renderBooks(books);
+    </script>
+</body>
+</html>
